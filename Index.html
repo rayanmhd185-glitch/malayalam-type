@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>മലയാളം ഇൻസ്ക്രിപ്റ്റ് ടൈപ്പിംഗ്</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 20px; background: #f0f4f8; }
+    h2 { color: #1e3a8a; }
+    #targetText { font-size: 24px; font-weight: bold; color: #0f172a; margin: 15px 0; min-height: 36px; }
+    #inputBox { width: 90%; max-width: 450px; font-size: 20px; padding: 12px; border: 2px solid #2563eb; border-radius: 8px; outline: none; }
+    .status { margin-top: 15px; font-size: 16px; color: #475569; }
+    .upi-box { margin-top: 30px; padding: 15px; background: #fff; border-radius: 8px; border: 1px dashed #cbd5e1; display: inline-block; }
+  </style>
+</head>
+<body>
+
+  <h2>മലയാളം ഇൻസ്ക്രിപ്റ്റ് പ്രാക്ടീസ്</h2>
+  <p>താഴെ കാണുന്ന അക്ഷരങ്ങൾ/വാക്കുകൾ ടൈപ്പ് ചെയ്യുക:</p>
+
+  <div id="targetText">അമ്മ</div>
+  <input type="text" id="inputBox" placeholder="ഇവിടെ ടൈപ്പ് ചെയ്യുക..." autofocus>
+
+  <div class="status">
+    സ്കോർ: <span id="score">0</span>
+  </div>
+
+  <div class="upi-box">
+    <p>☕ ഈ പ്രോജക്റ്റിനെ സപ്പോർട്ട് ചെയ്യാൻ ആഗ്രഹിക്കുന്നുണ്ടോ?</p>
+    <p><strong>GPay / PhonePe UPI:</strong> നിങ്ങളുടെ-UPI-ID-ഇവിടെ</p>
+  </div>
+
+  <script>
+    // ലളിതമായ ഇൻസ്ക്രിപ്റ്റ് കീ മാപ്പിംഗ്
+    const inscriptMap = {
+      'q':'ൌ', 'w':'ൈ', 'e':'ാ', 'r':'ീ', 't':'ൂ', 'y':'ബ', 'u':'ഹ', 'i':'ഗ', 'o':'ദ', 'p':'ജ',
+      'a':'ോ', 's':'േ', 'd':'്', 'f':'ി', 'g':'ു', 'h':'പ', 'j':'ര', 'k':'ക', 'l':'ത', ';':'ച',
+      'z':'െ', 'x':'ം', 'c':'മ', 'v':'ന', 'b':'വ', 'n':'ല', 'm':'സ',
+      'Q':'ഔ', 'W':'ഐ', 'E':'ആ', 'R':'ഈ', 'T':'ഊ', 'Y':'ഭ', 'U':'ങ', 'I':'ഘ', 'O':'ധ', 'P':'ഝ',
+      'A':'ഓ', 'S':'ഏ', 'D':'അ', 'F':'ഇ', 'G':'ഉ', 'H':'ഫ', 'J':'റ', 'K':'ഖ', 'L':'ഥ', ':':'ഛ',
+      'Z':'എ', 'C':'ണ', 'B':'ഴ', 'N':'ള', 'M':'ശ'
+    };
+
+    const words = ["അമ്മ", "ഭാരതം", "കേരളം", "മലയാളം", "പഠനം", "സ്കൂൾ"];
+    let currentIndex = 0;
+    let score = 0;
+
+    const inputBox = document.getElementById('inputBox');
+    const targetText = document.getElementById('targetText');
+    const scoreDisplay = document.getElementById('score');
+
+    // ഇംഗ്ലീഷ് കീ പ്രസ് ചെയ്യുമ്പോൾ ഇൻസ്ക്രിപ്റ്റ് മലയാളം ആക്കുന്ന ലോജിക്
+    inputBox.addEventListener('keypress', function(e) {
+      if (inscriptMap[e.key]) {
+        e.preventDefault();
+        const start = this.selectionStart;
+        const end = this.selectionEnd;
+        const text = this.value;
+        const char = inscriptMap[e.key];
+        this.value = text.substring(0, start) + char + text.substring(end);
+        this.selectionStart = this.selectionEnd = start + char.length;
+      }
+    });
+
+    // ടൈപ്പ് ചെയ്യുന്നത് കൃത്യമാണോ എന്ന് പരിശോധിക്കുന്നു
+    inputBox.addEventListener('input', function() {
+      if (this.value.trim() === targetText.innerText.trim()) {
+        score += 10;
+        scoreDisplay.innerText = score;
+        this.value = "";
+        currentIndex = (currentIndex + 1) % words.length;
+        targetText.innerText = words[currentIndex];
+      }
+    });
+  </script>
+</body>
+</html>
